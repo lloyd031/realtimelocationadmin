@@ -11,7 +11,8 @@ class DatabaseService {
   final CollectionReference adCollection=FirebaseFirestore.instance.collection("ad");
   final String? userId;
   final String? adId;
-  DatabaseService({required this.userId, this.adId});
+  final String? riderId;
+  DatabaseService({required this.userId, this.adId, this.riderId});
  
 
   Future storeDetails(String fn, String ln,)async{
@@ -35,8 +36,32 @@ class DatabaseService {
       return Ad_Model(doc.id);
     }).toList();
   }
+ Future createAssignedAdDoc(String name, String ad_id, String riderId)async{
+     return await riderCollection.doc(riderId).collection("assigned_ads").doc(ad_id).set({
+      'name':name,
+      'status':'inc'
+     });
+  }
+  Stream<List<RiderModel>> get getRiderList{
+    return riderCollection.snapshots().map(_riderListFromSnapShot);
+  }
+  List<RiderModel> _riderListFromSnapShot(QuerySnapshot snapshot)
+  {
+    return snapshot.docs.map((doc){
+      return RiderModel(doc.id,"","");
+    }).toList();
+  }
 
- 
+ Stream<RiderModel?> get riderData
+  {
+      return riderCollection.doc(riderId).snapshots().map(_riderDataFromSnapshot);  
+  }
+  RiderModel? _riderDataFromSnapshot(DocumentSnapshot snapshot)
+  {
+    
+    return RiderModel(riderId, snapshot.get("fn"),snapshot.get("ln"));
+  }
+
 Stream<UserData?> get userData
   {
       return riderCollection.doc(userId).snapshots().map(_userDataFromSnapshot);  
@@ -56,12 +81,12 @@ Stream<UserData?> get userData
   AdData? _adDataFromSnapshot(DocumentSnapshot snapshot)
   {
     
-    return AdData(snapshot.get("name"),);
+    return AdData(snapshot.get("name"));
   }
  
   
   Future createAd(String name)async{
-     return await adCollection.doc(userId).set({
+     return await adCollection.doc().set({
       'name':name,
      });
   }

@@ -9,3 +9,9 @@ class UserData{
   final String? acc_type;
   UserData(this.fn, this.ln, this.acc_type);
 }
+class RiderModel{
+  final String? id;
+  final String fn;
+  final String ln;
+  RiderModel(this.id, this.fn, this.ln);
+}
