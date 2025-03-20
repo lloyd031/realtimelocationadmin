@@ -36,21 +36,54 @@ class DatabaseService {
       return Ad_Model(doc.id);
     }).toList();
   }
- Future createAssignedAdDoc(String name, String ad_id, String riderId)async{
+ Future createAssignedAdDoc(String ad_id, String riderId)async{
      return await riderCollection.doc(riderId).collection("assigned_ads").doc(ad_id).set({
-      'name':name,
-      'status':'inc'
+      'status':'inc',
+      
      });
   }
+Future addAsignedAds(String ad_id, String riderId)async{
+     return await riderCollection.doc(riderId).update({
+       'ads':FieldValue.arrayUnion([ad_id])
+     });
+  }
+  
   Stream<List<RiderModel>> get getRiderList{
     return riderCollection.snapshots().map(_riderListFromSnapShot);
   }
   List<RiderModel> _riderListFromSnapShot(QuerySnapshot snapshot)
   {
-    return snapshot.docs.map((doc){
+    return snapshot.docs.where((doc){
+      List<dynamic> ads = doc['ads'] ?? [];
+          
+          // Check if the array does not contain the 'favoriteItem'
+      bool isAssigned=  !ads.contains(adId);
+      String accType = doc['acc_type'] ?? "";
+
+      return isAssigned && accType!='admin';
+    } ).map((doc){
       return RiderModel(doc.id,"","");
     }).toList();
   }
+  Stream<List<RiderModel>> get getAssignedRiderList{
+    return riderCollection.snapshots().map(_riderListPerAdFromSnapShot);
+  }
+  List<RiderModel> _riderListPerAdFromSnapShot(QuerySnapshot snapshot)
+  {
+    return snapshot.docs.where((doc){
+      List<dynamic> ads = doc['ads'] ?? [];
+          
+          // Check if the array does not contain the 'favoriteItem'
+      bool isAssigned=  ads.contains(adId);
+      String accType = doc['acc_type'] ?? "";
+
+      return isAssigned && accType!='admin';
+    } ).map((doc){
+      return RiderModel(doc.id,"","");
+    }).toList();
+  }
+
+  
 
  Stream<RiderModel?> get riderData
   {
@@ -90,6 +123,6 @@ Stream<UserData?> get userData
       'name':name,
      });
   }
-  
+
   }
   

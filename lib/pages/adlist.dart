@@ -122,7 +122,7 @@ class _Ad_ListState extends State<Ad_List> {
 class AdWidget extends StatelessWidget {
   final String? ad_id;
   const AdWidget({required this.ad_id});
-
+  
   @override
   Widget build(BuildContext context) {
     final adData = Provider.of<AdData>(context);
