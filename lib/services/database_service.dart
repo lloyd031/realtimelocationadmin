@@ -19,7 +19,8 @@ class DatabaseService {
      return await riderCollection.doc(userId).set({
       'fn':fn,
       'ln':ln,
-      'acc_type':'admin'
+      'acc_type':'admin',
+      'ads':[]
      });
   }
 
