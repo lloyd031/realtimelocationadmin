@@ -124,6 +124,14 @@ Stream<UserData?> get userData
       'name':name,
      });
   }
-
+Stream<List<RidesModel>> get getRides{
+    return riderCollection.doc(riderId).collection("assigned_ads").doc(adId).collection("rides").orderBy("timestamp").snapshots().map(_ridesFromSnapShot);
+  }
+  List<RidesModel> _ridesFromSnapShot(QuerySnapshot snapshot)
+  {
+    return snapshot.docs.map((doc){
+      return RidesModel(doc.id,doc.get("lat"),doc.get('long'),doc.get('timestamp'),doc.get('created_at'));
+    }).toList();
+  }
   }
   

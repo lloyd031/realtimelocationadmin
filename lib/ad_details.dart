@@ -47,7 +47,7 @@ class _AdDetailsState extends State<AdDetails> {
               StreamProvider<List<RiderModel>?>.value(
                   initialData: List.empty(),
                   value: DatabaseService(userId:"",adId:  widget.ad_id).getRiderList,
-                  child:RiderList(addRider:addRider, removeRider: removeRider,ad_id: widget.ad_id,)
+                  child:RiderList(addRider:addRider, removeRider: removeRider,ad_id: widget.ad_id,isAssigned: false,)
                   ),
                   TextButton(
                     onPressed: ()async{
@@ -90,7 +90,7 @@ class _AdDetailsState extends State<AdDetails> {
                   StreamProvider<List<RiderModel>?>.value(
                   initialData: List.empty(),
                   value: DatabaseService(userId:"",adId:  widget.ad_id).getAssignedRiderList,
-                  child:RiderList(addRider:addRider, removeRider: removeRider,ad_id: widget.ad_id,)
+                  child:RiderList(addRider:addRider, removeRider: removeRider,ad_id: widget.ad_id,isAssigned: true,)
                   ),
                   TextButton(onPressed: (){_showBottomSheet(context);}, child: Text("Add Riders"))
                 ],

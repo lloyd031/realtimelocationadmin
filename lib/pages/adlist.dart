@@ -4,7 +4,6 @@ import 'package:realtimelocation_admin/ad_details.dart';
 import 'package:realtimelocation_admin/models/Ad.dart';
 import 'package:realtimelocation_admin/models/User.dart';
 import 'package:realtimelocation_admin/models/rides_model.dart';
-import 'package:realtimelocation_admin/pages/locations.dart';
 import 'package:realtimelocation_admin/pages/startpage.dart';
 import 'package:realtimelocation_admin/riderList.dart';
 import 'package:realtimelocation_admin/services/database_service.dart';
